@@ -4,28 +4,12 @@
  */
 package PuntodeVenta;
 
+import com.devazt.networking.HttpClient;
+import com.devazt.networking.OnHttpRequestComplete;
+import com.devazt.networking.Response;
 
 public class Login extends javax.swing.JFrame {
 
-     // HttpClient cliente= HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
-    
-    /*public String Mostrar(String URL){
-        this.get = new HttpGet(URL);
-        try{
-           this.response= this.httpClient.execute(this.get);
-           this.resource= EntityUtils.toString(this.response.getEntity());
-            
-        } catch (Exception e){
-            System.out.println("ERROR"+ e.getMessage());
-        }
-        return this.resource;
-    }*/
-    
-    //Creando los usuarios 
-    String nombre="VENDEDOR", password="1234";
-    String usuario="COMPRADOR", password2="5678";
-    String usuario2="ADMINISTRADOR", password3="9101";
-    
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -91,26 +75,18 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_SALIRActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Menu ventana= new Menu();
-        if(USUARIO_BOX.getText().equals(nombre)&& PASSWORD_BOX.getText().equals(password)){
-         ventana.setVisible(true);
-         this.setVisible(false);
-         }
+        HttpClient cliente= new HttpClient(new OnHttpRequestComplete() {
+            @Override
+            public void onComplete(Response status) {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+        });
+        String usuario= USUARIO_BOX.getText().toString();
+        String password=PASSWORD_BOX.getText().toString();
+        cliente.excecute("http://localhost/examen/login.php");
         
-         if(USUARIO_BOX.getText().equals(usuario)&& PASSWORD_BOX.getText().equals(password2)){
-         ventana.setVisible(true);
-         this.setVisible(false);
-         }
-                 
-         if(USUARIO_BOX.getText().equals(usuario2)&& PASSWORD_BOX.getText().equals(password3)){
-         ventana.setVisible(true);
-         this.setVisible(false);
-         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
