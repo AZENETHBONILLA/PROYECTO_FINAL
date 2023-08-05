@@ -1,30 +1,26 @@
 <?php
-include 'conexion.php';
-$pdo=new Conexion();
+	if (isset($_REQUEST['Usuario']) && isset($_REQUEST['Password'])) {
+    $pdo = include 'conexion.php'; // Incluir el archivo y obtener la instancia de la conexión PDO
+    $Usuario = $_REQUEST['Usuario'];
+    $Password = $_REQUEST['Password'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-	if(isset($_GET['id'])){
-	$sql=$pdo->prepare("SELECT * FROM login WHERE Usuario=:Usuario");
-	$sql->bindValue(':Usuario',$_GET['Usuario']);
-	$sql->execute();
-	$sql->setFetchMode(PDO::FETCH_ASSOC);
-	header ("HTTP/1.1 200 Ok");
-	echo json_encode($sql->fetchAll());
-	exit;
-	}
-	else{
-	$sql=$pdo->prepare ("SELECT * FROM login");
-	$sql->execute();
-	$sql->setFetchMode(PDO::FETCH_ASSOC);
-	header ("HTTP/1.1 200 Ok");
-	echo json_encode ($sql->fetchAll());
-	exit;
-	}
+    // Consulta preparada con PDO
+    $Query = "SELECT * FROM login WHERE Usuario = :usuario AND Password = :password";
+    $statement = $pdo->prepare($Query);
+    $statement->bindParam(':usuario', $Usuario);
+    $statement->bindParam(':password', $Password);
+
+    $arreglo = array();
+    if ($statement->execute()) {
+        while ($recibido = $statement->fetch(PDO::FETCH_ASSOC)) {
+            array_push($arreglo, $recibido);
+        }
+    }
+
+    // Convertir resultado a JSON y enviarlo
+    print json_encode($arreglo, JSON_FORCE_OBJECT);
+
+    // Cerrar la conexión PDO
+    $pdo = null;
 }
-
-
-
-
-
-
 ?>

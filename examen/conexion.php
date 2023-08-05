@@ -1,21 +1,26 @@
 <?php
 class Conexion extends PDO 
 {
-	private $hostBd='localhost';
-	private $nombreBd='examen';
-	private $usuarioBd='root';
-	private $passwordBd='';
-	
-	public function __construct(){
-		try{
-			parent::__construct('mysql:host=' .$this->hostBd . ';dbname='. $this->
-			nombreBd. ';charset=utf8',$this->usuarioBd, $this->passwordBd, array (PDO::
-			ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-			
-		}catch (PDOException $e){
-			echo 'Error: '.$e->getMessage();
-			exit;
-		}
-	}
+    public function __construct() {
+        try {
+            $servername = "127.0.0.1:3306";
+            $username = "root";
+            $password = "";
+            $dbname = "examen";
+
+            // Llama al constructor de la clase base PDO (padre) para establecer la conexión
+            parent::__construct("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //echo "Conexión exitosa";
+        } catch (PDOException $e) {
+            die("Error de conexión: " . $e->getMessage());
+        }
+    }
 }
+
+// Crear una nueva instancia de la clase Conexion para establecer la conexión y retornarla.
+$pdo = new Conexion();
+return $pdo; // Retorna la instancia de la conexión PDO
 ?>
+
+
